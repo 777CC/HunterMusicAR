@@ -56,7 +56,8 @@ public class ContentController : MonoBehaviour
     public void OpenWebsite()
     {
         string httpStr = "http://";
-        if (Memberinfo.Instance.URL.Substring(0,7) == httpStr)
+        string httpsStr = "https://";
+        if (Memberinfo.Instance.URL.Substring(0,7) == httpStr || Memberinfo.Instance.URL.Substring(0, 8) == httpsStr)
         {
             Application.OpenURL(Memberinfo.Instance.URL);
         }

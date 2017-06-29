@@ -34,6 +34,7 @@ public class Register : MonoBehaviour {
     void Start () {
 #if UNITY_EDITOR
         //Memberinfo.SetInstance(null);
+        if(Memberinfo.Instance !=null)
         Memberinfo.ClearInstance();
 #endif
 
