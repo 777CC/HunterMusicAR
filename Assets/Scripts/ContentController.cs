@@ -28,7 +28,7 @@ public class ContentController : MonoBehaviour
     [SerializeField]
     private GameObject PopupMessage;
     [SerializeField]
-    private GameObject OpenWebsiteUI;
+    private Button OpenWebsiteUI;
     // Use this for initialization
     void Start()
     {
@@ -137,7 +137,7 @@ public class ContentController : MonoBehaviour
         contentMesh.enabled = true;
         if (!string.IsNullOrEmpty(Memberinfo.Instance.URL))
         {
-            OpenWebsiteUI.SetActive(true);
+            OpenWebsiteUI.interactable =true;
         }
         switch (Memberinfo.Instance.ContentType)
         {
@@ -151,7 +151,7 @@ public class ContentController : MonoBehaviour
     {
         arCamera.ClearSmooth();
         contentMesh.enabled = false;
-        OpenWebsiteUI.SetActive(false);
+        OpenWebsiteUI.interactable = false;
         switch (Memberinfo.Instance.ContentType)
         {
             case FileExtension.mp4:
