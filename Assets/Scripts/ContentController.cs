@@ -71,9 +71,8 @@ public class ContentController : MonoBehaviour
     {
         Member member = Memberinfo.Instance;
         Vector2 size = Vector2.zero;
-        string contentPath = Application.persistentDataPath + "/" + member.ID + "/" + member.ContentPath;
+        string contentPath = Memberinfo.ContentDirectory + "/" + member.ID + "/" + member.ContentPath;
         Debug.Log(contentPath);
-        Debug.Log(Application.streamingAssetsPath);
         switch (Memberinfo.Instance.ContentType)
         {
             case FileExtension.jpg:

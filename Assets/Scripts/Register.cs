@@ -158,7 +158,7 @@ public class Register : MonoBehaviour {
 
     void WriteContent(string id,string subPath,byte[] data)
     {
-        string dir = Application.persistentDataPath + "/" + id;
+        string dir = Memberinfo.ContentDirectory + "/" + id;
         if (!Directory.Exists(dir))
         {
             Directory.CreateDirectory(dir);
@@ -167,21 +167,11 @@ public class Register : MonoBehaviour {
     }
     void WriteMarker(string fileName, byte[] data)
     {
-        string dir = Application.persistentDataPath + "/Marker";
+        string dir = Memberinfo.ContentDirectory + "/Marker";
         if (!Directory.Exists(dir))
         {
             Directory.CreateDirectory(dir);
         }
         File.WriteAllBytes(dir + "/" + fileName, data);
     }
-    void WriteCache(string fileName, byte[] data)
-    {
-        string dir = Application.temporaryCachePath + "/" + fileName;
-        if (!Directory.Exists(dir))
-        {
-            Directory.CreateDirectory(dir);
-        }
-        File.WriteAllBytes(dir + "/" + fileName, data);
-    }
-
 }

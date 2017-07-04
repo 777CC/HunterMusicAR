@@ -40,6 +40,17 @@ public enum FileExtension
 [XmlRoot(ElementName = "memberinfo")]
 public class Memberinfo
 {
+    public static string ContentDirectory {
+        get {
+#if UNITY_ANDROID && !UNITY_EDITOR
+              return Application.persistentDataPath;
+#else
+            return Application.streamingAssetsPath;
+#endif
+
+        }
+    }
+
     const string URL = "http://www.huntermusicthailand.com";
     private static Member instance;
 
@@ -84,8 +95,8 @@ public class Memberinfo
 
     public static void ClearInstance()
     {
-        string markerDir = Application.persistentDataPath + "/Marker/" + Instance.MarkerPath;
-        string contentPath = Application.persistentDataPath + "/" + Instance.ID + "/" + Instance.ContentPath;
+        string markerDir = ContentDirectory + "/Marker/" + Instance.MarkerPath;
+        string contentPath = ContentDirectory + "/" + Instance.ID + "/" + Instance.ContentPath;
         instance = null;
         PlayerPrefs.DeleteAll();
         DeleteFile(markerDir + ".fset");
@@ -192,7 +203,7 @@ public class Memberinfo
     
     static void WriteContent(string id, string subPath, byte[] data)
     {
-        string dir = Application.persistentDataPath + "/" + id;
+        string dir = ContentDirectory + "/" + id;
         if (!Directory.Exists(dir))
         {
             Directory.CreateDirectory(dir);
@@ -201,7 +212,7 @@ public class Memberinfo
     }
     static void WriteMarker(string fileName, byte[] data)
     {
-        string dir = Application.persistentDataPath + "/Marker";
+        string dir = ContentDirectory + "/Marker";
         if (!Directory.Exists(dir))
         {
             Directory.CreateDirectory(dir);
