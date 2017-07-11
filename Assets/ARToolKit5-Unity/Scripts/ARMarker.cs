@@ -238,6 +238,8 @@ public class ARMarker : MonoBehaviour
 			
 			case MarkerType.NFT:
 				#if !UNITY_METRO
+			dir = Application.persistentDataPath + "/Marker";
+
 				if (dir.Contains("://")) {
                     dir = Application.persistentDataPath + "/Marker";
 

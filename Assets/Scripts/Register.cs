@@ -32,6 +32,8 @@ public class Register : MonoBehaviour {
     private GameObject loadingPopup;
 
     void Start () {
+		Debug.Log(Application.streamingAssetsPath);
+
 #if UNITY_EDITOR
         //Memberinfo.SetInstance(null);
         if(Memberinfo.Instance !=null)
@@ -78,12 +80,18 @@ public class Register : MonoBehaviour {
             //memberinfos
             StringReader reader = new StringReader(www.text);
             memberinfos = serializer.Deserialize(reader) as Memberinfo;
+			Debug.Log ("ID : " + memberinfos.Member.ID);
+			Debug.Log ("Name : " + memberinfos.Member.Name);
+			Debug.Log ("MarkerPath : " + memberinfos.Member.MarkerPath);
+			Debug.Log ("ContentPath : " + memberinfos.Member.ContentPath);
+			Debug.Log ("Tel : " + memberinfos.Member.Tel);
+			Debug.Log ("URL : " + memberinfos.Member.URL);
             StartCoroutine(DownloadMarker(memberinfos.Member));
         }
         else
         {
             IdField.text = string.Empty;
-            ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่");
+            ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo data");
             yield break;
         }
     }
@@ -93,6 +101,7 @@ public class Register : MonoBehaviour {
         string id = member.ID;
         string markerName = member.MarkerPath;
         WWW fset = new WWW(URL + "/" + id + "/Marker/" + markerName + ".fset");
+		Debug.Log (fset.url);
         yield return fset;
         if (string.IsNullOrEmpty(fset.error))
         {
@@ -101,7 +110,7 @@ public class Register : MonoBehaviour {
         else
         {
             IdField.text = string.Empty;
-            ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่");
+			ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo fset\n" + fset.error);
             yield break;
         }
         WWW fset3 = new WWW(URL + "/" + id + "/Marker/" + markerName + ".fset3");
@@ -113,7 +122,7 @@ public class Register : MonoBehaviour {
         else
         {
             IdField.text = string.Empty;
-            ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่");
+			ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo fset3\n" + fset3.error);
             yield break;
         }
         WWW iset = new WWW(URL + "/" + id + "/Marker/" + markerName + ".iset");
@@ -126,7 +135,7 @@ public class Register : MonoBehaviour {
         else
         {
             IdField.text = string.Empty;
-            ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่");
+			ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo iset\n" + iset.error);
             yield break;
         }
         StartCoroutine(DownloadContent(member));
@@ -146,13 +155,12 @@ public class Register : MonoBehaviour {
         else
         {
             IdField.text = string.Empty;
-            ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่");
+            ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo content");
             yield break;
         }
         Debug.Log("DownloadContent : " + id + "/" + contentName);
-        string extension = Path.GetExtension(contentName).Substring(1);
-        member.ContentType = (FileExtension)Enum.Parse(typeof(FileExtension), extension.ToLower());
         Memberinfo.SetInstance(member);
+
         SceneManager.LoadScene("AR");
     }
 

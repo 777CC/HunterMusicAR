@@ -27,8 +27,11 @@ public class ContentController : MonoBehaviour
     private Text messageText;
     [SerializeField]
     private GameObject PopupMessage;
-    [SerializeField]
+	[SerializeField]
+	private GameObject PopupLoading;
+	[SerializeField]
     private Button OpenWebsiteUI;
+
     // Use this for initialization
     void Start()
     {
@@ -38,7 +41,9 @@ public class ContentController : MonoBehaviour
 
     public void UpdateContent()
     {
+		PopupLoading.SetActive (true);
         StartCoroutine(Memberinfo.DownloadARData(Memberinfo.Instance.ID,(string e)=> {
+			PopupLoading.SetActive(false);
             messageText.text = "ไม่สามารถอัพเดทข้อมูลได้";
             PopupMessage.SetActive(true);
         }, () => {

@@ -45,7 +45,8 @@ public class Memberinfo
 #if UNITY_ANDROID && !UNITY_EDITOR
               return Application.persistentDataPath;
 #else
-            return Application.streamingAssetsPath;
+            //return Application.streamingAssetsPath;
+			return Application.persistentDataPath;
 #endif
 
         }
@@ -80,6 +81,9 @@ public class Memberinfo
     {
         try
         {
+			string extension = Path.GetExtension(member.ContentPath).Substring(1).ToLower();
+			member.ContentType = (FileExtension)Enum.Parse(typeof(FileExtension), extension);
+
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Member));
             StringWriter textWriter = new StringWriter();
             xmlSerializer.Serialize(textWriter, member);
@@ -188,8 +192,6 @@ public class Memberinfo
                 yield break;
             }
             Debug.Log("DownloadContent : " + id + "/" + contentName);
-            string extension = Path.GetExtension(contentName).Substring(1);
-            memberinfos.Member.ContentType = (FileExtension)Enum.Parse(typeof(FileExtension), extension);
             Memberinfo.SetInstance(memberinfos.Member);
         }
         else
