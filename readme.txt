@@ -1,7 +1,5 @@
-test create brunch
-fdsafdsa
 Requirement
-- Unity2017.1.0
+- Unity 5.6.0f3
 
 Install
 - Load ARUnity5-5.3.2 unity's asset
@@ -22,6 +20,9 @@ Sample fset(artoolkit's file) Url
 
 Sample content's Url
 - http://www.huntermusicthailand.com/1001/content/QEZ%20mini%20classic.mp4
+
+FAQ
+- xcode’s fix video is in Resource’s folder.
 
 Register and publish app
 -gmail and password
