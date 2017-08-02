@@ -7,6 +7,9 @@ Install
 - Load ARUnity5-5.3.2 unity's asset
 - 
 
+Fix
+- space bar in url can not use.
+
 Host FTP
 - ftp://ftp.huntermusicthailand.com:2121
 ID
