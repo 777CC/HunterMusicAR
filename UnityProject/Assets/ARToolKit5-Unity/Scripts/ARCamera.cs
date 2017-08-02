@@ -41,6 +41,19 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+
+struct ARPose {
+    public Quaternion Rot;
+    public Vector3 Pos;
+    public float deltaTime;
+    public ARPose(Vector3 pos,Quaternion rot,float time)
+    {
+        Pos = pos;
+        Rot = rot;
+        deltaTime = time;
+    }
+}
+
 /// <summary>
 /// A class which links an ARCamera to any available ARMarker via an AROrigin object.
 /// 
@@ -57,7 +70,9 @@ using UnityEngine;
 [ExecuteInEditMode]                     // Run in the editor so we can keep the scale at 1
 public class ARCamera : MonoBehaviour
 {
-	private const string LogTag = "ARCamera: ";
+    List<ARPose> arPose = new List<ARPose>();
+    const float arPoseSmoothLimitTime = 0.1f;
+    private const string LogTag = "ARCamera: ";
 	
 	public enum ViewEye
 	{
@@ -233,9 +248,31 @@ public class ARCamera : MonoBehaviour
 	protected virtual void ApplyTracking()
 	{
 		if (arVisible) {
-			transform.localPosition = arPosition; // TODO: Change to transform.position = PositionFromMatrix(origin.transform.localToWorldMatrix * pose) etc;
-			transform.localRotation = arRotation;
-		}
+            //transform.localPosition = arPosition; // TODO: Change to transform.position = PositionFromMatrix(origin.transform.localToWorldMatrix * pose) etc;
+            //transform.localRotation = arRotation;
+            //if (transform.localPosition != Vector3.zero)
+            ////if(false)
+            //{
+            //    //Vector3 temp = transform.position - oldPos;
+            //    //Vector3 temp = Vector3.zero;
+            //    //oldPos = transform.position;
+            //    //transform.localRotation = arRotation;
+
+            //    //transform.localPosition = Vector3.SmoothDamp(transform.localPosition, arPosition,ref temp, smoothPosition, 10);
+            //    //transform.localRotation = Quaternion.RotateTowards(transform.localRotation, arRotation, smoothRotate * Time.deltaTime);
+
+            //    transform.localPosition = Vector3.SmoothDamp(transform.localPosition, arPosition, ref temp, smoothPosition, 10);
+            //    transform.localRotation = Quaternion.RotateTowards(transform.localRotation, arRotation, smoothRotate * Time.deltaTime);
+            //}
+            //else
+            //{
+            //    transform.localPosition = arPosition;
+            //    transform.localRotation = arRotation;
+            //    //oldPos = arPosition;
+            //}
+            SetSmoothTran();
+            //transform.localRotation = Quaternion.RotateTowards(transform.rotation, arRotation, smoothRotate * Time.deltaTime);
+        }
 	}
 	
 	// Use LateUpdate to be sure the ARMarker has updated before we try and use the transformation.
@@ -251,5 +288,50 @@ public class ARCamera : MonoBehaviour
 		}
 	}
 	
+    private float ARPoseSum()
+    {
+        float sum = 0;
+        foreach(ARPose ar in arPose)
+        {
+            sum += ar.deltaTime;
+        }
+        return sum;
+    }
+
+    public void ClearSmooth()
+    {
+        transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        arPose.Clear();
+    }
+
+    private void SetSmoothTran()
+    {
+        Vector3 pos = transform.localPosition;
+        Quaternion rot = transform.localRotation;
+        float sum = 0;
+        foreach (ARPose ar in arPose)
+        {
+            sum += ar.deltaTime;
+            float delta = ar.deltaTime / arPoseSmoothLimitTime;
+            pos = Vector3.Lerp(pos, ar.Pos, delta);
+            rot = Quaternion.Lerp(rot, ar.Rot, delta);
+        }
+        if (transform.localPosition != Vector3.zero)
+        {
+            transform.localPosition = pos;
+            transform.localRotation = rot;
+        }
+        else
+        {
+            transform.localPosition = arPosition;
+            transform.localRotation = arRotation;
+        }
+
+        arPose.Add(new ARPose(arPosition, arRotation, Time.deltaTime));
+        if (sum > arPoseSmoothLimitTime)
+        {
+            arPose.RemoveAt(0);
+        }
+    }
 }
 

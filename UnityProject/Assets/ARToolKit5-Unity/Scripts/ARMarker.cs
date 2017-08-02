@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  ARMarker.cs
  *  ARToolKit for Unity
  *
@@ -184,10 +184,6 @@ public class ARMarker : MonoBehaviour
 	// Load the underlying ARToolKit marker structure(s) and set the UID.
     public void Load() 
     {
-		if (this.enabled == false) {
-			return;
-		}
-
 		//ARController.Log(LogTag + "ARMarker.Load()");
         if (UID != NO_ID) {
 			//ARController.Log(LogTag + "Marker already loaded.");
@@ -242,17 +238,21 @@ public class ARMarker : MonoBehaviour
 			
 			case MarkerType.NFT:
 				#if !UNITY_METRO
+			dir = Application.persistentDataPath + "/Marker";
+
 				if (dir.Contains("://")) {
+                    dir = Application.persistentDataPath + "/Marker";
+
 					// On Android, we need to unpack the StreamingAssets from the .jar file in which
 					// they're archived into the native file system.
-					dir = Application.temporaryCachePath;
-					foreach (string ext in NFTDataExts) {
-						string basename = NFTDataName + "." + ext;
-						if (!unpackStreamingAssetToCacheDir(basename)) {
-							dir = "";
-							break;
-						}
-					}
+					//dir = Application.temporaryCachePath;
+					//foreach (string ext in NFTDataExts) {
+					//	string basename = NFTDataName + "." + ext;
+					//	if (!unpackStreamingAssetToCacheDir(basename)) {
+					//		dir = "";
+					//		break;
+					//	}
+					//}
 				}
 				#endif
 			
@@ -281,10 +281,10 @@ public class ARMarker : MonoBehaviour
 				Filtered = currentFiltered;
 				FilterSampleRate = currentFilterSampleRate;
 				FilterCutoffFreq = currentFilterCutoffFreq;
+				if (MarkerType == MarkerType.NFT) NFTScale = currentNFTScale;
 
 				// Retrieve any required information from the configured ARToolKit ARMarker.
 				if (MarkerType == MarkerType.NFT) {
-					NFTScale = currentNFTScale;
 
 					int imageSizeX, imageSizeY;
 					PluginFunctions.arwGetMarkerPatternConfig(UID, 0, null, out NFTWidth, out NFTHeight, out imageSizeX, out imageSizeY);
