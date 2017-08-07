@@ -82,7 +82,7 @@ public class ContentController : MonoBehaviour
         StartCoroutine(Memberinfo.DownloadARData(Memberinfo.Instance.ID,(string e)=> {
 			//PopupLoading.SetActive(false);
 			HideLoading();
-            messageText.text = "ไม่สามารถอัพเดทข้อมูลได้";
+            messageText.text = "Can not update content.";
             PopupMessage.SetActive(true);
         }, () => {
             SceneManager.LoadScene("AR");
@@ -109,6 +109,10 @@ public class ContentController : MonoBehaviour
             Application.OpenURL(httpStr + Memberinfo.Instance.URL);
         }
     }
+
+	public void OpenWebsite(string url){
+		Application.OpenURL(url);
+	}
 
     //void LoadContent()
 	IEnumerator LoadContent()

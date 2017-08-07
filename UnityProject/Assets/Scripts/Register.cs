@@ -48,7 +48,7 @@ public class Register : MonoBehaviour {
             {
                 if (string.IsNullOrEmpty(IdField.text))
                 {
-                    ShowPopup("กรุณาใส่ ID ของคุณ");
+                    ShowPopup("Please enter your ID.");
                 }
                 else
                 {
@@ -112,7 +112,7 @@ public class Register : MonoBehaviour {
         else
         {
             IdField.text = string.Empty;
-            ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo data");
+            ShowPopup("ID not found.Please enter new ID.\nNO data");
             yield break;
         }
     }
@@ -131,7 +131,7 @@ public class Register : MonoBehaviour {
         else
         {
             IdField.text = string.Empty;
-			ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo fset\n" + fset.error);
+		ShowPopup("ID not found.Please enter new ID.\nNo fset\n" + fset.error);
             yield break;
         }
         WWW fset3 = new WWW(URL + "/" + id + "/Marker/" + markerName + ".fset3");
@@ -143,7 +143,7 @@ public class Register : MonoBehaviour {
         else
         {
             IdField.text = string.Empty;
-			ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo fset3\n" + fset3.error);
+		ShowPopup("ID not found.Please enter new ID.่\nNo fset3\n" + fset3.error);
             yield break;
         }
         WWW iset = new WWW(URL + "/" + id + "/Marker/" + markerName + ".iset");
@@ -156,7 +156,7 @@ public class Register : MonoBehaviour {
         else
         {
             IdField.text = string.Empty;
-			ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo iset\n" + iset.error);
+		ShowPopup("ID not found.Please enter new ID.่\nNo iset\n" + iset.error);
             yield break;
         }
         StartCoroutine(DownloadContent(member));
@@ -176,7 +176,7 @@ public class Register : MonoBehaviour {
         else
         {
             IdField.text = string.Empty;
-            ShowPopup("ไม่มี ID นี้ กรุณาใส่ ID ใหม่\nNo content");
+		ShowPopup("ID not found.Please enter new ID.่\nNo content");
             yield break;
         }
         Debug.Log("DownloadContent : " + id + "/" + contentName);
