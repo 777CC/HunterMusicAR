@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
-
+using System.Xml;
+using System.Xml.Serialization;
 public class ContentController : MonoBehaviour
 {
     [SerializeField]
@@ -31,6 +32,10 @@ public class ContentController : MonoBehaviour
 	private GameObject PopupLoading;
 	[SerializeField]
     private Button OpenWebsiteUI;
+	[SerializeField]
+	private Button EditIdButton;
+
+
 
     // Use this for initialization
     void Start()
@@ -113,6 +118,17 @@ public class ContentController : MonoBehaviour
 	public void OpenWebsite(string url){
 		Application.OpenURL(url);
 	}
+	
+	IEnumerator CheckButtonOn()
+	{
+		WWW www = new WWW("http://huntermusicthailand.com/setting.xml");
+		yield return www;
+		XmlSerializer serializer = new XmlSerializer(typeof(Setting));
+		//memberinfos
+		StringReader reader = new StringReader(www.text);
+		var setting = serializer.Deserialize(reader) as Setting;
+		EditIdButton.gameObject.SetActive (setting.isOnEditID);
+	}
 
     //void LoadContent()
 	IEnumerator LoadContent()
@@ -164,6 +180,8 @@ public class ContentController : MonoBehaviour
 
 		yield return new WaitForSeconds (3);
 		HideLoading ();
+
+		StartCoroutine (CheckButtonOn ());
     }
 
     void SetContectQuad(VideoPlayer vp)
