@@ -1,4 +1,4 @@
-test create brunch
+﻿test create brunch
 fdsafdsa
 Requirement
 - Unity2017.1.0
@@ -12,10 +12,6 @@ Fix
 
 Host FTP
 - ftp://ftp.huntermusicthailand.com:2121
-ID
-- huntermusi
-Password
-- 62756e0afb
 
 Sample ardata's Url id 1001
 - http://www.huntermusicthailand.com/1001/ardata.xml
